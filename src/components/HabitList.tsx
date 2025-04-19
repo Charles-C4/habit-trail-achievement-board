@@ -18,6 +18,7 @@ const initialHabits: Habit[] = [
   { id: 1, name: "Morning Meditation", category: "Mindfulness", streak: 5, completed: false },
   { id: 2, name: "Read 30 minutes", category: "Productivity", streak: 12, completed: false },
   { id: 3, name: "Exercise", category: "Health", streak: 3, completed: false },
+  { id: 4, name: "Study the 3 Ps", category: "Learning", streak: 0, completed: false },
 ];
 
 export function HabitList() {
@@ -25,7 +26,13 @@ export function HabitList() {
 
   const toggleHabit = (habitId: number) => {
     setHabits(habits.map(habit => 
-      habit.id === habitId ? { ...habit, completed: !habit.completed } : habit
+      habit.id === habitId 
+        ? { 
+            ...habit, 
+            completed: !habit.completed, 
+            streak: habit.completed ? habit.streak : habit.streak + 1 
+          } 
+        : habit
     ));
   };
 
