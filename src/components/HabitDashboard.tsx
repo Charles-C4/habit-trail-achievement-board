@@ -5,17 +5,33 @@ import { CalendarView } from "./CalendarView";
 import { CategoryList } from "./CategoryList";
 import { ProgressStats } from "./ProgressStats";
 import { Achievements } from "./Achievements";
+import { Welcome } from "./Welcome";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Calendar, Trophy, BarChart3, Layout } from "lucide-react";
 
+type UserInfo = {
+  name: string;
+  email: string;
+};
+
 export function HabitDashboard() {
   const [activeTab, setActiveTab] = useState("today");
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  if (!userInfo) {
+    return <Welcome onComplete={setUserInfo} />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8 bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
-        Habit Trail
-      </h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+          Habit Detector
+        </h1>
+        <div className="text-sm text-gray-600 dark:text-gray-300">
+          Welcome, {userInfo.name}
+        </div>
+      </div>
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="grid grid-cols-4 gap-4 bg-muted p-1 rounded-lg">

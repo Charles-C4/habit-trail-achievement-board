@@ -1,8 +1,9 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { ListPlus } from "lucide-react";
+import { toast } from "./ui/sonner";
 import {
   Select,
   SelectContent,
@@ -18,6 +19,19 @@ type AddHabitFormProps = {
 export function AddHabitForm({ onAddHabit }: AddHabitFormProps) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
+  const [showTip, setShowTip] = useState(true);
+
+  useEffect(() => {
+    if (showTip) {
+      const timer = setTimeout(() => {
+        toast("👋 Quick Tip", {
+          description: "Add your first habit by typing a name and selecting a category!",
+        });
+        setShowTip(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [showTip]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
