@@ -1,10 +1,12 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Check, Clock } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
+import { AddHabitForm } from "./AddHabitForm";
+import { toast } from "./ui/sonner";
 
 type Habit = {
   id: number;
@@ -25,6 +27,18 @@ const initialHabits: Habit[] = [
 export function HabitList() {
   const [habits, setHabits] = useState<Habit[]>(initialHabits);
 
+  const addHabit = (name: string, category: string) => {
+    const newHabit: Habit = {
+      id: Math.max(0, ...habits.map(h => h.id)) + 1,
+      name,
+      category,
+      streak: 0,
+      completed: false
+    };
+    setHabits([...habits, newHabit]);
+    toast.success("New habit added successfully!");
+  };
+
   const toggleHabit = (habitId: number) => {
     setHabits(habits.map(habit => 
       habit.id === habitId 
@@ -37,9 +51,28 @@ export function HabitList() {
     ));
   };
 
+  useEffect(() => {
+    const checkIncompleteHabits = () => {
+      const incompleteHabits = habits.filter(h => !h.completed);
+      if (incompleteHabits.length > 0) {
+        toast("Don't forget your habits!", {
+          description: `You have ${incompleteHabits.length} habits to complete today.`
+        });
+      }
+    };
+
+    // Check once when component mounts
+    checkIncompleteHabits();
+
+    // Set up periodic checks every 4 hours
+    const interval = setInterval(checkIncompleteHabits, 4 * 60 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, [habits]);
+
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">Today's Habits</h2>
+      <AddHabitForm onAddHabit={addHabit} />
       <div className="grid gap-4">
         {habits.map((habit) => (
           <Card key={habit.id} className={cn(
