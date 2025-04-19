@@ -19,6 +19,7 @@ const initialHabits: Habit[] = [
   { id: 2, name: "Read 30 minutes", category: "Productivity", streak: 12, completed: false },
   { id: 3, name: "Exercise", category: "Health", streak: 3, completed: false },
   { id: 4, name: "Study the 3 Ps", category: "Learning", streak: 0, completed: false },
+  { id: 5, name: "30 Days Gambling Break", category: "Health", streak: 0, completed: false },
 ];
 
 export function HabitList() {
