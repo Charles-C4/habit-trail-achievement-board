@@ -1,4 +1,3 @@
-# Welcome to your Lovable project
 
 ## Project info
 Clone the repository using the project's Git URL.
